@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -8,11 +9,28 @@ namespace SpillTracker.Utilities
 {
     public class RegexParserUtilities
     {
-        //refactoring code ot make it testable
+        //refactoring code to make it testable
         public static double RegexDensityParse(string input)
         {
-            double density = double.Parse(Regex.Match(input, @"^\d*\.*\d*").Value);
+            double density;
+            string densitytest = Regex.Match(input, @"^\d*\.*\d*\s").Value;
+
+            if (densitytest == "")
+            {
+                density = double.Parse(Regex.Match(input, @"^(\d*\.*\d*)-(\d*\.*\d*)").Groups[2].Value);
+            }
+            else
+            {
+                density = double.Parse(densitytest);
+            }
+            
             return density;
+        }
+
+        public static double RegexVaporParse(string vaporPressureString)
+        {
+            vaporPressureString = vaporPressureString.Replace("X10-", "e-0");
+            return (double)Decimal.Parse(Regex.Match(vaporPressureString, @"^\d*\.*\d*e*-*\d*").Value, NumberStyles.Float);
         }
     }
 }

@@ -5,6 +5,7 @@
     public class ExtraChemData
     {
         public int CID { get; set; }
+        public string  CAS { get; set; }
         public double MolecularWeight { get; set; }
         public string MolecularWeightReference { get; set; }
         public double Density { get; set; }
