@@ -29,8 +29,8 @@ namespace SpillTracker.Utilities
 
         public static double RegexVaporParse(string vaporPressureString)
         {
-            vaporPressureString = vaporPressureString.Replace("X10-", "E-");
-            return (double)Decimal.Parse(Regex.Match(vaporPressureString, @"^\d*\.*\d*E*-*\d*").Value, NumberStyles.Float);
+            vaporPressureString = vaporPressureString.Replace("X10-", "e-");
+            return (double)Decimal.Parse(Regex.Match(vaporPressureString, @"^\d*\.*\d*[e,E]*-*\d*").Value, NumberStyles.Float);
         }
     }
 }
