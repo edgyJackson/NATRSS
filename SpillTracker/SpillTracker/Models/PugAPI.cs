@@ -87,9 +87,7 @@ namespace SpillTracker.Models
                 cIDMol.MolecularWeight = (double)geo["PropertyTable"]["Properties"][0]["MolecularWeight"];
             }
 
-            return cIDMol;
-
-         
+            return cIDMol;      
         }
 
         public ExtraChemData GetDensVapPresFromPUGView(ExtraChemData data)
@@ -124,9 +122,7 @@ namespace SpillTracker.Models
                 Debug.WriteLine("vapor Pressure not found");
             }
 
-
             return (data);
-
         }
 
     }
