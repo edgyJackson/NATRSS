@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using SpillTracker.Models;
+using SpillTracker.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SpillTracker.Utilities
+namespace SpillTracker.Models
 {
     public class PugAPI
     {

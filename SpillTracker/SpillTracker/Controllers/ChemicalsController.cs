@@ -212,9 +212,10 @@ namespace SpillTracker.Controllers
 
             url = $"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{casNumber}/property/MolecularWeight/json";
 
+            //attempt to get the CID and Mol Weight from pug rest
             currentData = pug.GitCIDAndMolWeight(url);
 
-            //If there is no cid number found by the API send back and empty extraChemData object 
+            //If there is no cid number found by the API send back and empty extraChemData object and don't change the database
             if (currentData.CID != 0)
             {
                 currentData = pug.GetDensVapPresFromPUGView(currentData);
