@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using SpillTracker.Models;
+using SpillTracker.Models.Interfaces;
+using SpillTracker.Models.Repositories;
 using SpillTracker.Utilities;
 
 namespace SpillTracker.Controllers
@@ -20,10 +22,14 @@ namespace SpillTracker.Controllers
     public class ChemicalsController : Controller
     {
         private readonly SpillTrackerDbContext _context;
+        private readonly IPugAPI _pug;
+        private readonly ISpillTrackerChemicalRepository _chemRepo;
 
-        public ChemicalsController(SpillTrackerDbContext context)
+        public ChemicalsController(SpillTrackerDbContext context, ISpillTrackerChemicalRepository chemRepo, IPugAPI pug)
         {
             _context = context;
+            _pug = pug;
+            _chemRepo = chemRepo;
         }
 
         // GET: Chemicals
@@ -206,44 +212,43 @@ namespace SpillTracker.Controllers
         //Attempt to get CID and Molecular weight from the Pug REst API
         public ExtraChemData GetCIDMolWeightFromPUGRest(string casNumber)
         {
-            string url;
-            PugAPI pug = new PugAPI();
+            string url;          
             ExtraChemData currentData = new ExtraChemData() { CAS = casNumber };
 
             url = $"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{casNumber}/property/MolecularWeight/json";
 
             //attempt to get the CID and Mol Weight from pug rest
-            currentData = pug.GitCIDAndMolWeight(url);
-
+            currentData = _pug.GitCIDAndMolWeight(url);
+             
             //If there is no cid number found by the API send back and empty extraChemData object and don't change the database
             if (currentData.CID != 0)
             {
-                currentData = pug.GetDensVapPresFromPUGView(currentData);
+                currentData = _pug.GetDensVapPresFromPUGView(currentData);
                 if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.PubChemCid).FirstOrDefault() == null)
                 {
-                    Chemical chem = _context.Chemicals.Where(a => a.CasNum == casNumber).First();
+                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                     chem.PubChemCid = currentData.CID;
-                    _context.SaveChanges();
+                    _chemRepo.AddOrUpdateAsync(chem);     
                 }
 
                 if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.MolecularWeight).FirstOrDefault() == null)
                 {
-                    Chemical chem = _context.Chemicals.Where(a => a.CasNum == casNumber).First();
+                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                     chem.MolecularWeight = currentData.MolecularWeight;
-                    _context.SaveChanges();
+                    _chemRepo.AddOrUpdateAsync(chem);
                 }
 
                 if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.Density).FirstOrDefault() == null)
                 {
-                    Chemical chem = _context.Chemicals.Where(a => a.CasNum == casNumber).First();
+                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                     chem.Density = currentData.Density;
-                    _context.SaveChanges();
+                    _chemRepo.AddOrUpdateAsync(chem);
                 }
                 if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.VaporPressure).FirstOrDefault() == null)
                 {
-                    Chemical chem = _context.Chemicals.Where(a => a.CasNum == casNumber).First();
+                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                     chem.VaporPressure = currentData.VaporPressure;
-                    _context.SaveChanges();
+                    _chemRepo.AddOrUpdateAsync(chem);
                 }
             }
 

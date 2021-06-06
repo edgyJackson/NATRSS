@@ -55,7 +55,7 @@ namespace SpillTracker.Controllers
                     stream.Close();
                 }
 
-                //The API call worked correctly now update the cid and molecular weight
+                //The API call worked correctly 
                 Debug.WriteLine(jsonString);
                 JObject geo = JObject.Parse(jsonString);
                 GeoLocationCoordinates theCoordinates = new GeoLocationCoordinates();
