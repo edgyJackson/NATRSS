@@ -21,13 +21,13 @@ namespace SpillTracker.Controllers
 {
     public class ChemicalsController : Controller
     {
-        private readonly SpillTrackerDbContext _context;
+        /*private readonly SpillTrackerDbContext _context;*/
         private readonly IPugAPI _pug;
         private readonly ISpillTrackerChemicalRepository _chemRepo;
 
-        public ChemicalsController(SpillTrackerDbContext context, ISpillTrackerChemicalRepository chemRepo, IPugAPI pug)
+        public ChemicalsController(ISpillTrackerChemicalRepository chemRepo, IPugAPI pug)
         {
-            _context = context;
+           /* _context = context;*/
             _pug = pug;
             _chemRepo = chemRepo;
         }
@@ -37,19 +37,25 @@ namespace SpillTracker.Controllers
         public async Task<IActionResult> Index()
         {
             /*return View(await _context.Chemicals.ToListAsync());*/
-            return View(await _context.Chemicals.OrderBy(x => x.Name).ToListAsync());
+            /*return View(await _context.Chemicals.OrderBy(x => x.Name).ToListAsync());*/
+            return View(await _chemRepo.OrderByNameAsync());
         }
 
         [AllowAnonymous]
-        public IActionResult ByFirstLetter(string l)
+        public async Task<IActionResult> ByFirstLetterAsync(string l)
         {
+
             //var list = new List<string> "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             var list = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".Split(" ").ToList();
-            var all = _context.Chemicals.OrderBy(x => x.Name).ToList();
+            var all = await _chemRepo.OrderByNameAsync();
+            /*var all = _context.Chemicals.OrderBy(x => x.Name).ToList();*/
             var letter = new List<Chemical>();
             var hashtag = new List<Chemical>();
-            letter = _context.Chemicals.Where(c => c.Name.Substring(0, 1).Contains(l)).OrderBy(x => x.Name).ToList();
-            hashtag = _context.Chemicals.Where(c => !list.Contains(c.Name.Substring(0, 1))).OrderBy(x => x.Name).ToList();
+
+            letter = await _chemRepo.getChemicalByLetterOrderByNameAsync(l);
+            hashtag = await _chemRepo.getHashTagAsync();
+            /*letter = _context.Chemicals.Where(c => c.Name.Substring(0, 1).Contains(l)).OrderBy(x => x.Name).ToList();
+            hashtag = _context.Chemicals.Where(c => !list.Contains(c.Name.Substring(0, 1))).OrderBy(x => x.Name).ToList();*/
             //_logger.LogInformation(sort.letterInput);(x => x.Name).ToList();
 
             if (l == null)
@@ -58,7 +64,8 @@ namespace SpillTracker.Controllers
             }
             else if (l.Length > 1)
             {
-                letter = _context.Chemicals.Where(c => c.Name.Substring(0, l.Length).Contains(l)).OrderBy(x => x.Name).ToList();
+                letter = await _chemRepo.getChemicalByLetterOrderByNameAsync(l);
+                /*letter = _context.Chemicals.Where(c => c.Name.Substring(0, l.Length).Contains(l)).OrderBy(x => x.Name).ToList();*/
                 return View("Index", letter);
             }
             else if (l != "#")
@@ -84,14 +91,16 @@ namespace SpillTracker.Controllers
                 return NotFound();
             }
 
-            var chemical = await _context.Chemicals
-                .FirstOrDefaultAsync(m => m.Id == id);
+
+            var chemical = await _chemRepo.FindByIdAsync((int)id);
+            /*var chemical = await _context.Chemicals
+                .FirstOrDefaultAsync(m => m.Id == id);*/
             if (chemical == null)
             {
                 return NotFound();
             }
 
-            ExtraChemData extraData = GetCIDMolWeightFromPUGRest(chemical.CasNum);
+            ExtraChemData extraData = await GetChemicalPropertiesFromPUGAPIAsync(chemical.CasNum);
 
             return View(chemical);
         }
@@ -128,7 +137,8 @@ namespace SpillTracker.Controllers
                 return NotFound();
             }
 
-            var chemical = await _context.Chemicals.FindAsync(id);
+            var chemical = await _chemRepo.FindByIdAsync((int)id);
+            /*var chemical = await _context.Chemicals.FindAsync(id);*/
             if (chemical == null)
             {
                 return NotFound();
@@ -153,8 +163,11 @@ namespace SpillTracker.Controllers
             {
                 try
                 {
-                    _context.Update(chemical);
-                    await _context.SaveChangesAsync();
+
+
+                    await _chemRepo.AddOrUpdateAsync(chemical);
+                    /*_context.Update(chemical);
+                    await _context.SaveChangesAsync();*/
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -203,14 +216,16 @@ namespace SpillTracker.Controllers
 
         private bool ChemicalExists(int id)
         {
-            return _context.Chemicals.Any(e => e.Id == id);
+
+            return _chemRepo.ChemExists(id);
+            /*return _context.Chemicals.Any(e => e.Id == id);*/
         }
 
 
 
 
         //Attempt to get CID and Molecular weight from the Pug REst API
-        public ExtraChemData GetCIDMolWeightFromPUGRest(string casNumber)
+        public async Task<ExtraChemData> GetChemicalPropertiesFromPUGAPIAsync(string casNumber)
         {
             string url;          
             ExtraChemData currentData = new ExtraChemData() { CAS = casNumber };
@@ -218,37 +233,34 @@ namespace SpillTracker.Controllers
             url = $"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{casNumber}/property/MolecularWeight/json";
 
             //attempt to get the CID and Mol Weight from pug rest
-            currentData = _pug.GitCIDAndMolWeight(url);
+            currentData = _pug.GitCIDAndMolWeightFromPugRest(url);
              
             //If there is no cid number found by the API send back and empty extraChemData object and don't change the database
             if (currentData.CID != 0)
             {
+                Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                 currentData = _pug.GetDensVapPresFromPUGView(currentData);
-                if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.PubChemCid).FirstOrDefault() == null)
-                {
-                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
+                if (await _chemRepo.TheCIDIsNullAsync(casNumber))
+                {                    
                     chem.PubChemCid = currentData.CID;
-                    _chemRepo.AddOrUpdateAsync(chem);     
+                    await _chemRepo.AddOrUpdateAsync(chem);     
                 }
 
-                if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.MolecularWeight).FirstOrDefault() == null)
+                if (await _chemRepo.TheMolecularWeightIsNullAsync(casNumber))
                 {
-                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                     chem.MolecularWeight = currentData.MolecularWeight;
-                    _chemRepo.AddOrUpdateAsync(chem);
+                    await _chemRepo.AddOrUpdateAsync(chem);
                 }
 
-                if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.Density).FirstOrDefault() == null)
+                if (await _chemRepo.TheDensityIsNullAsync(casNumber))
                 {
-                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                     chem.Density = currentData.Density;
-                    _chemRepo.AddOrUpdateAsync(chem);
+                    await _chemRepo.AddOrUpdateAsync(chem);
                 }
-                if (_context.Chemicals.Where(a => a.CasNum == casNumber).Select(x => x.VaporPressure).FirstOrDefault() == null)
+                if (await _chemRepo.TheVaporPressureIsNullAsync(casNumber))
                 {
-                    Chemical chem = _chemRepo.GetChemByCAS(casNumber);
                     chem.VaporPressure = currentData.VaporPressure;
-                    _chemRepo.AddOrUpdateAsync(chem);
+                    await _chemRepo.AddOrUpdateAsync(chem);
                 }
             }
 

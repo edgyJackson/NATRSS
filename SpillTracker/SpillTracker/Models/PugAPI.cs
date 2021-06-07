@@ -10,29 +10,18 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SpillTracker.Services;
 
-namespace SpillTracker.Models.Repositories
+namespace SpillTracker.Models
 {
     public class PugAPI : IPugAPI
     {
-
-        public string PugRestAPICall(string url)
+        private readonly IAPICall _apiCall;
+        public PugAPI( IAPICall apiCall)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            string jsonString = null;
-            // TODO: You should handle exceptions here
-            using (WebResponse response = request.GetResponse())
-            {
-                Stream stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
-                jsonString = reader.ReadToEnd();
-                reader.Close();
-                stream.Close();
-            }
-
-            return jsonString;
+            /* _context = context;*/
+            _apiCall = apiCall;
         }
-
         public double ParseDensityFromJSON(string jsonString)
         {
             //The API call was successful populate the density and vapor pressure 
@@ -54,14 +43,14 @@ namespace SpillTracker.Models.Repositories
             return RegexParserUtilities.RegexVaporParse(vaporPressureString); 
         }
 
-        public ExtraChemData GitCIDAndMolWeight(string url)
+        public ExtraChemData GitCIDAndMolWeightFromPugRest(string url)
         {
             ExtraChemData cIDMol = new ExtraChemData();
             string jsonString = null;
             //try to search for compound using the CID from Pug-Rest API If that doesn't work try again with CAS-prepended to the CAS number
             try
             {
-                 jsonString =  PugRestAPICall(url);            
+                 jsonString =  _apiCall.DoAPICall(url);            
             }
             catch (Exception)
             {
@@ -69,7 +58,7 @@ namespace SpillTracker.Models.Repositories
                 url = url.Insert(56, "CAS-");
                 try
                 {
-                    jsonString = PugRestAPICall(url);
+                    jsonString = _apiCall.DoAPICall(url);
                 }
                 catch (Exception)
                 {
@@ -100,7 +89,7 @@ namespace SpillTracker.Models.Repositories
             //try to send an API call to the PugView API for Density and Vapor Pressure
             try
             {
-                jsonString = PugRestAPICall(densityURL);
+                jsonString = _apiCall.DoAPICall(densityURL);
                 data.Density = ParseDensityFromJSON(jsonString);
             }
             catch (Exception)
@@ -113,7 +102,7 @@ namespace SpillTracker.Models.Repositories
             //try to send an API call to the PugView API for Vapor Pressure
             try
             {
-                jsonString = PugRestAPICall(vaporURL);
+                jsonString = _apiCall.DoAPICall(vaporURL);
                 data.VaporPressure = ParseVaporPresureFromJSON(jsonString);
             }
             catch (Exception)

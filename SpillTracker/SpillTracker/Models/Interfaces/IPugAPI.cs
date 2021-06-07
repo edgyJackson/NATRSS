@@ -7,7 +7,8 @@ namespace SpillTracker.Models.Interfaces
 {
     public interface IPugAPI
     {
-        ExtraChemData GitCIDAndMolWeight(string url);
+        ExtraChemData GitCIDAndMolWeightFromPugRest(string url);
         ExtraChemData GetDensVapPresFromPUGView(ExtraChemData data);
+     
     }
 }

@@ -13,5 +13,13 @@ namespace SpillTracker.Models.Interfaces
         Chemical GetChemByCAS(string casNumber);
 
         List<Chemical> ByFirstLetter(string l);
+        Task<List<Chemical>> getChemicalByLetterOrderByNameAsync(string l);
+        Task<List<Chemical>> getHashTagAsync();
+        Task<List<Chemical>> OrderByNameAsync();
+        Task<bool> TheCIDIsNullAsync(string cas);
+        Task<bool> TheMolecularWeightIsNullAsync(string cas);
+        Task<bool> TheDensityIsNullAsync(string cas);
+        Task<bool> TheVaporPressureIsNullAsync(string cas);
+
     }
 }

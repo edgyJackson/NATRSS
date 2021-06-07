@@ -65,7 +65,8 @@ namespace SpillTracker
             services.AddScoped<ISpillTrackerCompanyRepository, SpillTrackerCompanyRepository>();
             services.AddScoped<ISpillTrackerContactInfoRepository, SpillTrackerContactInfoRepository>();
             services.AddScoped<IPugAPI, PugAPI>();
-            
+            services.AddScoped<IAPICall, APICall>();
+
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
