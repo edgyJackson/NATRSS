@@ -1,19 +1,27 @@
-﻿using Moq;
+﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using SpillTracker.Controllers;
 using SpillTracker.Models;
 using SpillTracker.Models.Interfaces;
+using SpillTracker.Models.Repositories;
+using SpillTrackerCS.Tests.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace SpillTrackerCS.Tests.UnitTests
 {
 
     public class ChemicalsControllerTests
     {
-        Mock<ISpillTrackerChemicalRepository> mockChemicalsRepo = new Mock<ISpillTrackerChemicalRepository>();
+        private readonly List<Chemical> data = MockTest.GenerateChemsList();
+        private readonly Mock<SpillTrackerDbContext> mockContext = new Mock<SpillTrackerDbContext>();
+        private readonly Mock<ISpillTrackerChemicalRepository> mockChemicalsRepo = new Mock<ISpillTrackerChemicalRepository>();
+
         Mock<IPugAPI> mockPugAPI = new Mock<IPugAPI>();
         [SetUp]
         public void Setup()
@@ -77,8 +85,28 @@ namespace SpillTrackerCS.Tests.UnitTests
             mockChemicalsRepo.Verify(x => x.AddOrUpdateAsync(It.IsAny<Chemical>()), Times.Exactly(2));         
         }
 
+        [Test]
+        public  void ChemnicalController_ChemRepoOrdersByNameandReturnsChemicalsThatHaveNumbersinTheirName()
+        {
+
+            Mock<DbSet<Chemical>> mockChemicalsDbSet = MockTest.GetMockDbSet(data.AsQueryable());
+            mockContext.Setup(ctx => ctx.Chemicals).Returns(mockChemicalsDbSet.Object);
 
 
+            //Arrange
+            ISpillTrackerChemicalRepository chemRepo = new SpillTrackerChemicalRepository(mockContext.Object);
+
+            //Act
+            
+            var chemsOrderedByName = chemRepo.OrderByNameAsync().GetAwaiter().GetResult(); 
+            var ChemsWithNumbersinName = chemRepo.getHashTagAsync().GetAwaiter().GetResult(); 
+
+
+            //Assert
+            Assert.That(chemsOrderedByName[2], Is.EqualTo("Bocho"));
+            Assert.That(ChemsWithNumbersinName.Count(), Is.EqualTo(1));
+
+        }
 
     }
 }
