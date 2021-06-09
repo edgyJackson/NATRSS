@@ -126,7 +126,14 @@
 <div style="text-align: center;">
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a> |
-    <a asp-action="PDFReport" asp-controller="PDF" asp-route-id="@Model.Id">Generate PDF</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="PDFReport" asp-controller="PDF" asp-route-id="@Model.Id">Generate PDF</a>
+    }
+    else if (User.IsInRole("Employee") || User.IsInRole("FacilityManager"))
+    {
+        <a asp-action="Index" asp-controller="CoinPayments" asp-route-id="@Model.Id">Generate PDF</a>
+    }
 </div>
 
 <style>

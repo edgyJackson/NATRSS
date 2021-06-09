@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Controllers\Guide.cshtml" />
+    <Content Remove="wwwroot\js\CalculationDetails.js" />
     <Content Remove="wwwroot\js\chemDetails.js" />
     <Content Remove="wwwroot\lib\favicon.ico" />
   </ItemGroup>
@@ -59,7 +60,7 @@
       <PackagePath></PackagePath>
     </None>
     <None Include="Views\Admin\Index.cshtml" />
-    <None Include="Views\CoinPayments\directory\PaymentResponse.cshtml" />
+    <None Include="Views\CoinPayments\PaymentResponse.cshtml" />
     <None Include="Views\CoinPayments\Index.cshtml" />
     <None Include="Views\CoinPayments\ProcessCheckout.cshtml" />
     <None Include="Views\Companies\Create.cshtml" />
@@ -79,6 +80,7 @@
     <Watch Remove="Views\PDF\Index.cshtml" />
     <Watch Remove="Views\Shared\_Layout2.cshtml" />
     <Watch Remove="wwwroot\css\PDFReport.css" />
+    <Watch Remove="wwwroot\js\CalculationDetails.js" />
     <Watch Remove="wwwroot\js\chemDetails.js" />
     <Watch Remove="wwwroot\js\EditFacilityChems.js" />
   </ItemGroup>
@@ -90,6 +92,7 @@
 
     <None Include="wwwroot\js\adminpanel.js" />
     <None Include="wwwroot\js\adminpanel2.js" />
+    <None Include="wwwroot\js\CalculationDetails.js" />
     <None Include="wwwroot\js\chemDetails.js" />
     <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\.gitignore" />
     <None Include="wwwroot\lib\davidshimjs-qrcodejs-04f46c6\index.svg" />

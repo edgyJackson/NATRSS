@@ -29,8 +29,10 @@ namespace SpillTracker.Controllers
             _HttpContextAccessor = httpContextAccessor;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
+            TempData["TheFormId"] = id;
+            
             return View();
         }
 
@@ -72,7 +74,7 @@ namespace SpillTracker.Controllers
         public IActionResult SuccessHandler(string orderNumber)
         {
             ViewBag.OrderNumber = orderNumber;
-
+           
             return View("PaymentResponse");
         }
 

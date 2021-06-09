@@ -271,7 +271,8 @@
 
         <div class="form-group tab">
             <h1>Perform Calculation</h1>
-            <input type="button" class="btn btn-primary" value="Perform Spill Calculation" onclick="calculateSpill()" />
+            <input type="button" class="btn btn-primary" value="Perform Spill Calculation" onclick="calculateSpill()" /> 
+            <input type="button" onclick="displayCalculationDetails()" id="CalculationDetails" class="btn btn-outline-light btn-sm" value="See Calculation Details" />
             <div id="spilLresults" style="display:none;">
                 <div>
                     <label asp-for="AmountSpilled">Amount Spilled:</label>
@@ -360,10 +361,15 @@
     <a  asp-action="Index">Back to List</a>
 </div>
 
+<div id="openCalculationDetails" style="display: none;">
+    
+</div>
+
 
 
 @section Scripts {
     <script src="/js/form.js"></script>
+    <script src="/js/CalculationDetails.js"></script>
 }
 
 

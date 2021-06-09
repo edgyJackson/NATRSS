@@ -12,13 +12,14 @@
 
 @if (!string.IsNullOrEmpty(ViewBag.OrderNumber))
 {
-    <div class="response-text">
-        <hr />
-        <h2>Thank you</h2>
-        <hr />
-        Your order has been successfully processed! <br /> <br />
-        ORDER NUMBER: @ViewBag.OrderNumber
-    </div>
+<div class="response-text">
+    <hr />
+    <h2>Thank you</h2>
+    <hr />
+    Your order has been successfully processed! <br /> <br />
+    ORDER NUMBER: @ViewBag.OrderNumber <br /> <br />
+    <a asp-action="PDFReport" asp-controller="PDF" asp-route-id="@TempData["TheFormId"]">Generate PDF</a>
+</div>
 }
 else
 {

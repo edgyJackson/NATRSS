@@ -157,3 +157,11 @@ body {
     max-width: 200px;
     max-height: 200px;
 }
+
+#openCalculationDetails {
+    height: 250px;
+    width: 250px;
+    background-color: red;
+    margin-top:20px;
+
+}
