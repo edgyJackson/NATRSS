@@ -19,7 +19,7 @@ namespace SpillTracker.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ISpillTrackerStuserFacilityRepository _stUserFacRepo;
         private readonly ISpillTrackerFormRepository _FormRepo;
-        public PDFController(IConfiguration config,ISpillTrackerStuserFacilityRepository stUserFacRepo, ISpillTrackerFormRepository FormRepo, UserManager<IdentityUser> userManager)
+        public PDFController(ISpillTrackerStuserFacilityRepository stUserFacRepo, ISpillTrackerFormRepository FormRepo, UserManager<IdentityUser> userManager)
         {
             _FormRepo = FormRepo;
             _stUserFacRepo = stUserFacRepo;

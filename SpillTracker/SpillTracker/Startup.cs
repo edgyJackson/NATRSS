@@ -68,6 +68,7 @@ namespace SpillTracker
             services.AddScoped<IAPICall, APICall>();
 
 
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

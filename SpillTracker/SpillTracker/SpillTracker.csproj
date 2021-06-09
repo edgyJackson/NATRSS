@@ -59,6 +59,9 @@
       <PackagePath></PackagePath>
     </None>
     <None Include="Views\Admin\Index.cshtml" />
+    <None Include="Views\CoinPayments\directory\PaymentResponse.cshtml" />
+    <None Include="Views\CoinPayments\Index.cshtml" />
+    <None Include="Views\CoinPayments\ProcessCheckout.cshtml" />
     <None Include="Views\Companies\Create.cshtml" />
     <None Include="Views\Companies\Delete.cshtml" />
     <None Include="Views\Companies\Details.cshtml" />
