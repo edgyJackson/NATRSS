@@ -16,6 +16,9 @@ namespace SpillTracker.Models.Interfaces
         Task<List<Chemical>> getChemicalByLetterOrderByNameAsync(string l);
         Task<List<Chemical>> getHashTagAsync();
         Task<List<Chemical>> OrderByNameAsync();
+        List<Chemical> getChemicalByLetterOrderByName(string l);
+        List<Chemical> getHashTag();
+        List<Chemical> OrderByName();
         Task<bool> TheCIDIsNullAsync(string cas);
         Task<bool> TheMolecularWeightIsNullAsync(string cas);
         Task<bool> TheDensityIsNullAsync(string cas);

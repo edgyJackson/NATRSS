@@ -40,12 +40,6 @@ namespace SpillTracker.Utilities
             {
                 //Irregular format or no vapor pressure found
             }
-                      
-            //Check obscure api return format incase it uses it
-            if (Regex.IsMatch(vaporPressureString, @"^[V,v]apor\s*[P,p]ressure\s\([S,s]olid\):\s(\d*\.*\d*[e,E]*-*\d*)\s[P,p][A,a]"))
-            {
-                vp = (double)Decimal.Parse(Regex.Match(vaporPressureString, @"^[V,v]apor\s*[P,p]ressure\s\([S,s]olid\):\s(\d*\.*\d*[e,E]*-*\d*)\s[P,p][A,a]").Groups[1].Value, NumberStyles.Float) * .0075;
-            }
 
             //Check for units that are in pascals and convert them to mm hg
             if (Regex.IsMatch(vaporPressureString, @"^\d*\.*\d*[e,E]*-*\d*\s[P,p][A,a]"))
@@ -53,6 +47,11 @@ namespace SpillTracker.Utilities
                 vp = vp * .0075;
             }
 
+            //Check obscure api return format incase it uses it
+            if (Regex.IsMatch(vaporPressureString, @"^[V,v]apor\s*[P,p]ressure\s\([S,s]olid\):\s(\d*\.*\d*[e,E]*-*\d*)\s[P,p][A,a]"))
+            {
+                vp = (double)Decimal.Parse(Regex.Match(vaporPressureString, @"^[V,v]apor\s*[P,p]ressure\s\([S,s]olid\):\s(\d*\.*\d*[e,E]*-*\d*)\s[P,p][A,a]").Groups[1].Value, NumberStyles.Float) * .0075;
+            }
 
             return vp;
 

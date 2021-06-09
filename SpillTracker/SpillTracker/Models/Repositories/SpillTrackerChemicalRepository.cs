@@ -73,6 +73,19 @@ namespace SpillTracker.Models.Repositories
             }   
         }
 
+        public virtual List<Chemical> getChemicalByLetterOrderByName(string l)
+        {
+            return  _context.Chemicals.Where(c => c.Name.Substring(0, l.Length).Contains(l)).OrderBy(x => x.Name).ToList();
+        }
+        public virtual List<Chemical> getHashTag()
+        {
+            var list = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".Split(" ").ToList();
+            return  _context.Chemicals.Where(c => !list.Contains(c.Name.Substring(0, 1))).OrderBy(x => x.Name).ToList();
+        }
+        public virtual List<Chemical> OrderByName() 
+        {
+            return  _context.Chemicals.OrderBy(x => x.Name).ToList();
+        }
         public virtual async Task<bool> TheCIDIsNullAsync(string cas)
         {
             return await _context.Chemicals.Where(a => a.CasNum == cas).Select(x => x.PubChemCid).FirstOrDefaultAsync() == null;
