@@ -93,7 +93,7 @@ namespace SpillTracker.Controllers
                 ["cmd"] = "_pay_auto",
                 ["ipn_type"] = "simple",
                 ["ipn_mode"] = "hmac",
-                ["merchant"] = _config.GetSection("CoinPayments")["MerchantId"],
+                ["merchant"] = _config["MerchantId"],
                 ["allow_extra"] = "0",
                 ["currency"] = "USD",
                 ["amountf"] = orderModel.OrderTotal.ToString("N2"),
@@ -126,7 +126,7 @@ namespace SpillTracker.Controllers
                 parameters = stream.ToArray();
             }
             var strRequest = Encoding.ASCII.GetString(parameters);
-            var ipnSecret = _config.GetSection("CoinPayments")["IpnSecret"];
+            var ipnSecret = _config["IpnSecret"];
 
             if (Helper.VerifyIpnResponse(strRequest, Request.Headers["hmac"], ipnSecret,
                 out Dictionary<string, string> values))
