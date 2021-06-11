@@ -271,7 +271,8 @@
 
         <div class="form-group tab">
             <h1>Perform Calculation</h1>
-            <input type="button" class="btn btn-primary" value="Perform Spill Calculation" onclick="calculateSpill()" />
+            <input type="button" class="btn btn-primary" value="Perform Spill Calculation" onclick="calculateSpill()" /> 
+            <input type="button" onclick="displayCalculationDetails()" id="CalculationDetails" class="btn btn-outline-light btn-sm" value="See Calculation Details" />
             <div id="spilLresults" style="display:none;">
                 <div>
                     <label asp-for="AmountSpilled">Amount Spilled:</label>
@@ -360,10 +361,57 @@
     <a  asp-action="Index">Back to List</a>
 </div>
 
+<div class="px-2" id="openCalculationDetails" style="display: none;">
+    <strong>Calculations: </strong> <br /> <br />
+    As we are concerned about the regulated chemicals and less so about mixtures:
+    <br />
+    <strong>volumeSpilled</strong> * <strong>chemicalConcentration</strong> to find the amount spilled in lbs
+    <br /> <br />
+    Chemicals entered in gallons will be converted to lbs
+    <br />
+    <strong>volumeSpilled</strong> * <strong>chemicalConcentration</strong> * <strong>chemical.density</strong>
+    <br /> <br />
+    convert wind speed from mph to meters per sec:
+    <br />
+    <strong>
+        windSpeedMPH
+    </strong> * <strong>1.60934</strong> * <strong>
+        1000 / 60 / 60
+    </strong> = <strong>windspeedMeterPerSec</strong>
+    <br /> <br />
+
+    convert chemical temp to Celsius from Fahrenheit:
+    <br />
+    <strong>(spillTemperatureF - 32)</strong> * <strong>(5.0 / 9.0)</strong> = <strong>spillTemperatureC</strong>
+    <br /> <br />
+
+    calculate spill area:
+    <br />
+    <strong>
+        length
+    </strong> x <strong>
+        width
+    </strong>
+    <br /> <br />
+    If the chemical spilled is a liquid we calculate evaporation rate:
+    <br />
+    see <a href="https://www.epa.gov/sites/production/files/2013-08/documents/technical_guidance_for_hazard_analysis.pdf">Technical Guidance for Hazard Analysis</a>
+        <br />
+    <strong>page 147 appendix g section 2 equation 7</strong> <br />
+    The variables of the equation are on <strong>
+        pg 146
+    </strong> 
+    <br /> <br />
+    total amount evaporated:
+    <br />
+    <strong>evaporation rate</strong> * <strong>time</strong>
+</div>
+
 
 
 @section Scripts {
     <script src="/js/form.js"></script>
+    <script src="/js/CalculationDetails.js"></script>
 }
 
 

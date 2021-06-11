@@ -44,5 +44,19 @@ namespace SpillTracker.Models.Repositories
         {
             return _dbSet.Any(f => f.Id == id);
         }
+
+        public virtual async Task<Form> GetFormByIdReturnAllFields(int id)
+        {
+            return await _dbSet.Where(f => f.Id == id)
+                .Include(f => f.FacilityChemical)
+                .ThenInclude(fc => fc.Chemical)
+                .Include(f => f.ChemicalState)
+                .Include(f => f.Facility)
+                .ThenInclude(fa => fa.Company)
+                .Include(f => f.SpillSurface)               
+                .Include(f => f.Stuser)
+                .FirstOrDefaultAsync();
+
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace SpillTracker.Models.Interfaces
         IQueryable<Form> GetAllFormsByCompanyId(int id);
         new IQueryable<Form> GetAll();
         bool FormExists(int id);
+
+        Task<Form> GetFormByIdReturnAllFields(int id);
     }
 }
