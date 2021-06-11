@@ -86,7 +86,7 @@ namespace SpillTrackerCS.Tests.UnitTests
         }
 
         [Test]
-        public  void ChemnicalController_ChemRepoOrdersByNameandReturnsChemicalsThatHaveNumbersinTheirName()
+        public void ChemnicalRepo_OrdersByNameandReturnsChemicalsThatHaveNumbersinTheirName()
         {
 
             Mock<DbSet<Chemical>> mockChemicalsDbSet = MockTest.GetMockDbSet(data.AsQueryable());
@@ -97,13 +97,13 @@ namespace SpillTrackerCS.Tests.UnitTests
             ISpillTrackerChemicalRepository chemRepo = new SpillTrackerChemicalRepository(mockContext.Object);
 
             //Act
-            
-            var chemsOrderedByName = chemRepo.OrderByNameAsync().GetAwaiter().GetResult(); 
-            var ChemsWithNumbersinName = chemRepo.getHashTagAsync().GetAwaiter().GetResult(); 
+
+            var chemsOrderedByName = chemRepo.OrderByName();
+            var ChemsWithNumbersinName = chemRepo.getHashTag();
 
 
             //Assert
-            Assert.That(chemsOrderedByName[2], Is.EqualTo("Bocho"));
+            Assert.That(chemsOrderedByName[3].Name, Is.EqualTo("Bocho"));
             Assert.That(ChemsWithNumbersinName.Count(), Is.EqualTo(1));
 
         }
