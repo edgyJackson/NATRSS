@@ -159,9 +159,8 @@ body {
 }
 
 #openCalculationDetails {
-    height: 250px;
-    width: 250px;
-    background-color: red;
-    margin-top:20px;
-
+    height: 585px;
+    width: 650px;
+    background-color: #90ee90;
+    margin-top: 10px;
 }
