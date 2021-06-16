@@ -83,35 +83,35 @@ Link to a feature: [PDFReportService.feature](SpillTrackerBDDTests/Features/PDFR
         {
 #line 9
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "UserName",
                         "Email",
                         "FirstName",
                         "LastName",
                         "Password",
                         "Role"});
-            table6.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "TaliaK",
-                        "knott@example.com",
+                        "admin@example.com",
                         "Talia",
                         "Knott",
-                        "Hello123#",
+                        "Admin123!",
                         "Admin"});
-            table6.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "ZaydenC",
                         "clark@example.com",
                         "Zayden",
                         "Clark",
                         "Hello123#",
                         "Employee"});
-            table6.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "DavilaH",
                         "hareem@example.com",
                         "Hareem",
                         "Davila",
                         "Hello123#",
                         "FacilityManager"});
-            table6.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "KrzysztofP",
                         "krzysztof@example.com",
                         "Krzysztof",
@@ -119,24 +119,16 @@ Link to a feature: [PDFReportService.feature](SpillTrackerBDDTests/Features/PDFR
                         "Hello123#",
                         ""});
 #line 10
- testRunner.Given("the following users exist", ((string)(null)), table6, "Given ");
+ testRunner.Given("the following users exist", ((string)(null)), table1, "Given ");
 #line hidden
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("SpillTracker can generate a PDF of spill report for admins")]
-        [NUnit.Framework.TestCaseAttribute("TaliaK", "Form/Details/1", "True", null)]
-        [NUnit.Framework.TestCaseAttribute("ZaydenC", "Form/Details/1", "False", null)]
-        [NUnit.Framework.TestCaseAttribute("DavilaH", "Form/Details/1", "False", null)]
-        [NUnit.Framework.TestCaseAttribute("KrzysztofP", "Form/Details/1", "False", null)]
-        [NUnit.Framework.TestCaseAttribute("God", "Form/Details/1", "True", null)]
-        public virtual void SpillTrackerCanGenerateAPDFOfSpillReportForAdmins(string userName, string page, string answer, string[] exampleTags)
+        public virtual void SpillTrackerCanGenerateAPDFOfSpillReportForAdmins()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("UserName", userName);
-            argumentsOfScenario.Add("Page", page);
-            argumentsOfScenario.Add("answer", answer);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SpillTracker can generate a PDF of spill report for admins", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 20
 this.ScenarioInitialize(scenarioInfo);
@@ -162,7 +154,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 21
- testRunner.Given("username is \'UserName\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("username is TaliaK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 22
    testRunner.And("user is logged In", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -171,16 +163,13 @@ this.FeatureBackground();
    testRunner.And("users role is Admin", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 24
-   testRunner.And("user navigates to Form/Details/1 \'page\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("user navigates to Form/Details/1 page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 25
   testRunner.When("the user activates the generate pdf report button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 26
-  testRunner.Then("they are directed to the generated pdf report page \'answer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 27
-   testRunner.And("They can see the pdf report.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("the pdf is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
