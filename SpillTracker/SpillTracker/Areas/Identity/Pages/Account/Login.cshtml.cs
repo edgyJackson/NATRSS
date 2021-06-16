@@ -86,14 +86,14 @@ namespace SpillTracker.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
 
             // check captcha here
-            string secret = _config["reCaptchaSecretKey"];
+           /* string secret = _config["reCaptchaSecretKey"];
             GoogleReCAPTCHAResponse captchaResult = GoogleReCAPTCHAService.VerifyToken(Input.Token, secret);
 
             if (captchaResult.Success == false || captchaResult.Score <= 0.5)
             {
                 ModelState.AddModelError(string.Empty ,"We've detected that you might be a robot. Please Try again later.");
                 return Page();
-            }
+            }*/
 
 
             if (ModelState.IsValid)
