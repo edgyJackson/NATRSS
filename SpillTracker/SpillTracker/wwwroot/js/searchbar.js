@@ -1,3 +1,11 @@
+window.onload = function() {
+    var id = window.sessionStorage.getItem("id");
+    if(id != null) {
+        document.getElementById(id).style.backgroundColor = "#536abe";
+        document.getElementById(id).style.color = "white";
+    }
+}
+
 function search()    
 {    
     console.log("Working");
@@ -35,4 +43,11 @@ function search()
     }    
 }   
 
-// part of js code found at https://www.c-sharpcorner.com/article/custom-search-using-client-side-code/
+
+document.querySelectorAll('a').forEach(item => {
+    item.addEventListener('click', function() {
+      //handle click
+    window.sessionStorage.setItem("id", this.id);
+    })
+  })
+

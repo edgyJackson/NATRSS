@@ -15,11 +15,14 @@ namespace SpillTracker.Models
         [Key]
         [Column("ID")]
         public int Id { get; set; }
+        [Required]
         [StringLength(150)]
         public string AgencyName { get; set; }
         [StringLength(20)]
+        [Required]
         public string PhoneNumber { get; set; }
         [StringLength(35)]
+        [Required]
         public string State { get; set; }
     }
 }

@@ -1,10 +1,12 @@
 CREATE TABLE [Form] (
   [ID] int PRIMARY KEY IDENTITY(1, 1),
   [Spill_Reported_By] nvarchar(50),
-  [Spill_Reported_Time] datetime,
+  [Spill_Reported_Date] date,
+  [Spill_Reported_Time] time,
   [Spill_Location] nvarchar(100),
   [Spill_Ongoing] bit,
   [Spill_Contained] bit,
+  [Need_Assistance] bit,
   [Chemical_Pressurized] bit,
   [Spill_Volume] float,
   [Spill_Volume_Units] nvarchar(30),
@@ -12,7 +14,8 @@ CREATE TABLE [Form] (
   [Spill_Forming_Puddle] bit,
   [Spill_Reach_Water_Source] bit,
   [Water_Source] nvarchar(100),
-  [Spill_Duration] float,
+  [Spill_Duration_Hours] float,
+  [Spill_Duration_Minutes] float,
   [Cleanup_StartTime] datetime,
   [Chemical_Temperature] float,
   [Chemical_Temperature_Units] nvarchar(30),
@@ -46,7 +49,7 @@ CREATE TABLE [Form] (
   [Notes] nvarchar(500),
   [ContactNotes] nvarchar(500),
   [STUserID] int,
-  [ChemicalID] int,
+  [FacilityChemicalID] int,
   [Spill_SurfaceID] int,
   [ChemicalStateID] int,
   [FacilityID] int
@@ -103,6 +106,7 @@ CREATE TABLE [Facility] (
   [Address_ZIP] nvarchar(15),
   [Location] nvarchar(100),
   [Industry] nvarchar(50),
+  [AccessCode] nvarchar(20),
   [CompanyID] int
 )
 GO
@@ -129,6 +133,7 @@ GO
 CREATE TABLE [Company] (
   [ID] int PRIMARY KEY IDENTITY(1, 1),
   [Name] nvarchar(100),
+  [AccessCode] nvarchar(20),
   [Num_Facilities] int
 )
 GO
@@ -140,10 +145,17 @@ CREATE TABLE [StatusTime] (
 )
 GO
 
+CREATE TABLE [StuserFacilities] (
+  [ID] int PRIMARY KEY IDENTITY(1, 1),
+  [StuserID] int,
+  [FacilityID] int
+)
+GO
+
 ALTER TABLE [Form] ADD CONSTRAINT Form_FK_STUserID FOREIGN KEY ([STUserID]) REFERENCES [STUser] ([ID])
 GO
 
-ALTER TABLE [Form] ADD CONSTRAINT  Form_FK_ChemicalID FOREIGN KEY ([ChemicalID]) REFERENCES [Chemical] ([ID])
+ALTER TABLE [Form] ADD CONSTRAINT  Form_FK_FacilityChemicalID FOREIGN KEY ([FacilityChemicalID]) REFERENCES [FacilityChemicals] ([ID])
 GO
 
 ALTER TABLE [Form] ADD CONSTRAINT Form_FK_Spill_SurfaceID FOREIGN KEY ([Spill_SurfaceID]) REFERENCES [Surface] ([ID])
@@ -168,4 +180,10 @@ ALTER TABLE [FacilityChemicals] ADD CONSTRAINT FacilityChemicals_FK_ChemicalID F
 GO
 
 ALTER TABLE [FacilityChemicals] ADD CONSTRAINT FacilityChemicals_FK_FacilityID FOREIGN KEY ([FacilityID])  REFERENCES [Facility] ([ID])
+GO
+
+ALTER TABLE [StuserFacilities] ADD CONSTRAINT StuserFacilities_FK_StuserId FOREIGN KEY ([StuserID]) REFERENCES [Stuser] ([ID])
+GO
+
+ALTER TABLE [StuserFacilities] ADD CONSTRAINT StuserFacilities_FK_FacilityId FOREIGN KEY ([FacilityID]) REFERENCES [Facility] ([ID])
 GO

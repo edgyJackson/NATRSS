@@ -1,0 +1,31 @@
+﻿body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: white;
+    color: Black;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    color: black;
+    /*line-height: 60px;*/ /* Vertically center the text there */
+}
+
+.theTableHead {
+    border-style: solid;
+    border-top-width: 5px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 3.5px;
+    border-color: black;
+    margin-bottom: 0;
+}
+.theTableBody {
+    border-style: solid;
+    border-color: black;
+    border-width: 1.5px;
+}
+

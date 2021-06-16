@@ -1,0 +1,159 @@
+﻿@model SpillTracker.Models.PrintResultsVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h2 class="text-center">Hazardous Materials Spill and Incident Report</h2>
+<h5 class="text-center">Under Title 40 Chapter I SubChapter J Parts 302 and 355 of the Code of Federal Regulations in the USA</h5>
+<p class="text-center">To report a release or spill, contact the federal government's centralized reporting center, the National Response Center (NRC), at <strong>1-800-424-8802</strong></p>
+<hr>
+<br>
+<span style="float:left;"><strong>1. INCIDENT AND RESPONSE DESCRIPTION</strong></span>
+<span style="float:right;"><strong>
+    Need Assistance? @if (Model.Results.theFormToPrint.NeedAssistance == null || Model.Results.theFormToPrint.NeedAssistance == false)
+    {
+        <em>No</em>
+    }
+    else
+    {
+        <em>Yes</em>
+    }
+</strong></span>
+
+<table class=" theTableHead table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th class="py-0" scope="col">Date/Time: @DateTime.Now</th>
+            <th class="py-0" scope="col">Cleanup StartTime: @Model.Results.theFormToPrint.CleanupStartTime </th>
+            <th class="py-0" scope="col">Reported By: @Model.Results.theFormToPrint.SpillReportedBy</th>
+        </tr>
+    </thead>
+</table>
+
+<table class="theTableBody table table-bordered table-sm">
+    <tbody>
+        <tr>
+            <td class="py-0">Spill Report Date / Time: @Model.Results.theFormToPrint.SpillReportedDate @Model.Results.theFormToPrint.SpillReportedTime</td>
+            <td class="py-0">Spill Ongoing: @Model.Results.theFormToPrint.SpillOngoing </td>
+        </tr>
+        <tr>
+            <td class="py-0">Spill Location: @Model.Results.theFormToPrint.SpillLocation </td>
+            <td class="py-0">Spill Duration: @Model.Results.theFormToPrint.SpillDurationHours hours</td>
+        </tr>
+        <tr>
+            <td class="py-0">Spill Contained: @Model.Results.theFormToPrint.SpillContained </td>
+            <td class="py-0">Reaches Water Source: @Model.Results.theFormToPrint.SpillReachWaterSource</td>
+        </tr>
+        <tr>
+            <td class="py-0"> Spill Surface: @Model.Results.theFormToPrint.SpillSurface.Type </td>
+            <td class="py-0"> Spill Width/Length/Depth: @Model.Results.theFormToPrint.SpillWidth @Model.Results.theFormToPrint.SpillWidthUnits x @Model.Results.theFormToPrint.SpillLength @Model.Results.theFormToPrint.SpillLengthUnits x @Model.Results.theFormToPrint.SpillDepth @Model.Results.theFormToPrint.SpillDepthUnits</td>
+        </tr>
+        <tr>
+            <td class="py-0">Spill Volume: @Model.Results.theFormToPrint.SpillVolume @Model.Results.theFormToPrint.SpillVolumeUnits</td>
+            <td class="py-0">Spill Area: @Model.Results.theFormToPrint.SpillArea @Model.Results.theFormToPrint.SpillAreaUnits</td>
+        </tr>
+        <tr>
+            <td class="py-0" colspan="2">Extra notes about spill: @Model.Results.theFormToPrint.Notes</td>
+        </tr>
+    </tbody>
+</table>
+
+<span style="float:left;"><strong>2. ADMINISTRATIVE INFORMATION</strong></span>
+
+<table class="theTableBody table table-bordered table-sm">
+    <tbody>
+        <tr>
+            <td class="py-0" colspan="2">Company Name: @Model.Results.theFormToPrint.Facility.Company.Name</td>
+        </tr>
+        <tr>
+            <td class="py-0">Facility Name: @Model.Results.theFormToPrint.Facility.Name </td>
+            <td class="py-0">Facility ID: @Model.Results.theFormToPrint.FacilityId</td>
+        </tr>
+        <tr>
+            <td class="py-0" colspan="2">Facilty Address: @Model.Results.theFormToPrint.Facility.AddressStreet @Model.Results.theFormToPrint.Facility.AddressCity @Model.Results.theFormToPrint.Facility.AddressState @Model.Results.theFormToPrint.Facility.AddressZip</td>
+        </tr>
+        <tr>
+            <td class="py-0">Facility Manager: @Model.Results.theFormToPrint.Stuser.FirstName @Model.Results.theFormToPrint.Stuser.LastName</td>
+            <td class="py-0">Phone: 555-555-5555 </td>
+        </tr>
+        <tr>
+            <td class="py-0">Contact Person: @Model.Results.theFormToPrint.Stuser.FirstName @Model.Results.theFormToPrint.Stuser.LastName</td>
+            <td class="py-0">Phone: 555-555-5555</td>
+        </tr>
+    </tbody>
+</table>
+
+<span style="float:left;"><strong>3. CHEMICAL / RELEASE INFORMATION</strong></span>
+<span style="float:right;"> <strong>Call 911 <em style="font-size: small;"> FOR ANY RELEASES INTO WATERWAYS, WETLANDS, OR AGRICULTURE AREAS</em></strong></span>
+<table class="theTableBody table table-bordered table-sm">
+    <tbody>
+
+        <tr>
+            <td class="py-0 text-truncate" colspan="2"> Chemical Name: @Model.Results.theFormToPrint.FacilityChemical.Chemical.Name</td>
+        </tr>
+        <tr>
+            <td class="py-0"> CAS Number: @Model.Results.theFormToPrint.FacilityChemical.Chemical.CasNum</td>
+            <td class="py-0"> Amount Spilled: @Model.Results.theFormToPrint.AmountSpilled @Model.Results.theFormToPrint.AmountSpilledUnits</td>
+        </tr>
+        <tr>
+            <td class="py-0"> Concentration: @Model.Results.theFormToPrint.ChemicalConcentration</td>
+            <td class="py-0"> Temperature: @Model.Results.theFormToPrint.ChemicalTemperature @Model.Results.theFormToPrint.ChemicalTemperatureUnits </td>
+        </tr>
+        <tr>
+            <td class="py-0"> Chemical State: @Model.Results.theFormToPrint.ChemicalState.Type</td>
+            <td class="py-0"> Pressurized: @Model.Results.theFormToPrint.ChemicalPressurized</td>
+        </tr>
+        <tr>
+            <td class="py-0"> Amount Evaporated: @Model.Results.theFormToPrint.AmountEvaporated @Model.Results.theFormToPrint.AmountEvaporatedUnits</td>
+            <td class="py-0"> Spill Reportable: @Model.Results.theFormToPrint.SpillReportable</td>
+        </tr>
+        <tr>
+            <td class="py-0"> CERCLA Chemical: @Model.Results.theFormToPrint.FacilityChemical.Chemical.CerclaChem</td>
+            <td class="py-0"> EPCRA Chemical: @Model.Results.theFormToPrint.FacilityChemical.Chemical.EpcraChem</td>
+        </tr>
+    </tbody>
+</table>
+
+<span style="float:left;"><strong>3. WEATHER INFORMATION</strong></span>
+<table class="theTableBody table table-bordered table-sm">
+    <tbody>
+        <tr>
+            <td class="py-0"> Sky Conditions: @Model.Results.theFormToPrint.SkyConditions</td>
+            <td class="py-0"> Temperature: @Model.Results.theFormToPrint.WeatherTemperature @Model.Results.theFormToPrint.WeatherTemperatureUnits</td>
+        </tr>
+        <tr>
+            <td class="py-0"> Wind Speed: @Model.Results.theFormToPrint.WindSpeed @Model.Results.theFormToPrint.WindSpeedUnits</td>
+            <td class="py-0"> Wind Direction: @Model.Results.theFormToPrint.WindDirection</td>
+        </tr>
+        <tr>
+            <td class="py-0"> Humidity: @Model.Results.theFormToPrint.WeatherHumidity @Model.Results.theFormToPrint.WeatherHumidityUnits</td>
+            <td class="py-0"> Pressurized: @Model.Results.theFormToPrint.ChemicalPressurized</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class=" theTableHead table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th class="py-0" scope="col">Contact Notes: 
+            @if (Model.Results.theFormToPrint.ContactNotes == null || Model.Results.theFormToPrint.ContactNotes == "") 
+                { 
+                    <em>Your spill is under the reportable quantity. There is no need to contact authorities at this time</em>
+                }
+            else
+                {
+                    @Model.Results.theFormToPrint.ContactNotes
+                }
+</th>
+        </tr>
+    </thead>
+</table>
+
+@*<style>
+        th {
+            background-color: #50773e;
+            color: white;
+        }
+    </style>*@
